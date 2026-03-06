@@ -1,98 +1,80 @@
-import Link from 'next/link'
-import { TrendingUp, Users, Clock, Target } from 'lucide-react'
+'use client'
+
+import { TrendingUp, Clock, Users, CheckCircle } from 'lucide-react'
+import Navbar from '@/components/navigation/Navbar'
 
 export default function Analytics() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="text-2xl font-bold text-blue-600">
-              AI Meeting Tracker
-            </Link>
-            <div className="flex gap-4">
-              <Link href="/dashboard" className="px-4 py-2 text-gray-700 hover:text-blue-600">
-                Dashboard
-              </Link>
-              <Link href="/meetings" className="px-4 py-2 text-gray-700 hover:text-blue-600">
-                Meetings
-              </Link>
-              <Link href="/analytics" className="px-4 py-2 text-blue-600 font-medium">
-                Analytics
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       <main className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Analytics & Insights</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">Analytics</h1>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <MetricCard
             icon={<TrendingUp className="w-8 h-8 text-blue-600" />}
-            title="Meeting Efficiency"
-            value="87%"
-            trend="+5%"
-          />
-          <MetricCard
-            icon={<Users className="w-8 h-8 text-green-600" />}
-            title="Avg Participants"
-            value="8.5"
-            trend="+2.1"
+            title="Total Meetings"
+            value="124"
+            trend="+12%"
+            trendUp={true}
           />
           <MetricCard
             icon={<Clock className="w-8 h-8 text-purple-600" />}
             title="Avg Duration"
             value="42 min"
-            trend="-8 min"
+            trend="-5%"
+            trendUp={false}
           />
           <MetricCard
-            icon={<Target className="w-8 h-8 text-orange-600" />}
-            title="Action Items"
-            value="92%"
-            trend="+7%"
+            icon={<Users className="w-8 h-8 text-green-600" />}
+            title="Avg Participants"
+            value="6.8"
+            trend="+8%"
+            trendUp={true}
+          />
+          <MetricCard
+            icon={<CheckCircle className="w-8 h-8 text-orange-600" />}
+            title="Completion Rate"
+            value="94%"
+            trend="+3%"
+            trendUp={true}
           />
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-6 mb-6">
+        <div className="grid lg:grid-cols-2 gap-8 mb-8">
           <div className="bg-white rounded-lg shadow p-6">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Meeting Trends</h2>
-            <div className="h-64 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg">
-              <p className="text-gray-500">Chart: Meeting frequency over time</p>
+            <div className="h-64 flex items-center justify-center text-gray-400">
+              Chart placeholder - Meeting frequency over time
             </div>
           </div>
 
           <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Participation Rate</h2>
-            <div className="h-64 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg">
-              <p className="text-gray-500">Chart: Participant engagement metrics</p>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Participant Distribution</h2>
+            <div className="h-64 flex items-center justify-center text-gray-400">
+              Chart placeholder - Participants per meeting
             </div>
           </div>
         </div>
 
         <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Top Insights</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Key Insights</h2>
           <div className="space-y-4">
             <InsightItem
-              title="Peak Meeting Times"
-              description="Most productive meetings occur between 10 AM - 12 PM with 92% completion rate."
-              type="positive"
+              title="Most Productive Day"
+              value="Tuesday"
+              description="Highest meeting completion rate and action item follow-through"
             />
             <InsightItem
-              title="Action Item Completion"
-              description="87% of action items are completed within deadline, up 12% from last month."
-              type="positive"
+              title="Peak Meeting Time"
+              value="10:00 AM - 11:00 AM"
+              description="Most meetings scheduled during this time slot"
             />
             <InsightItem
-              title="Meeting Duration"
-              description="Average meeting duration decreased by 8 minutes, improving efficiency."
-              type="positive"
-            />
-            <InsightItem
-              title="Attendance Rate"
-              description="5% decrease in attendance for meetings scheduled after 4 PM."
-              type="warning"
+              title="Average Action Items"
+              value="5.2 per meeting"
+              description="Consistent tracking and completion of action items"
             />
           </div>
         </div>
@@ -101,24 +83,41 @@ export default function Analytics() {
   )
 }
 
-function MetricCard({ icon, title, value, trend }: { icon: React.ReactNode; title: string; value: string; trend: string }) {
+function MetricCard({
+  icon,
+  title,
+  value,
+  trend,
+  trendUp,
+}: {
+  icon: React.ReactNode
+  title: string
+  value: string
+  trend: string
+  trendUp: boolean
+}) {
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <div className="flex items-center justify-between mb-4">
         {icon}
+        <span className={`text-sm font-medium ${trendUp ? 'text-green-600' : 'text-red-600'}`}>
+          {trend}
+        </span>
       </div>
-      <h3 className="text-gray-600 text-sm font-medium mb-1">{title}</h3>
-      <p className="text-3xl font-bold text-gray-900 mb-2">{value}</p>
-      <p className="text-sm text-green-600">{trend}</p>
+      <h3 className="text-2xl font-bold text-gray-900 mb-1">{value}</h3>
+      <p className="text-sm text-gray-600">{title}</p>
     </div>
   )
 }
 
-function InsightItem({ title, description, type }: { title: string; description: string; type: 'positive' | 'warning' }) {
+function InsightItem({ title, value, description }: { title: string; value: string; description: string }) {
   return (
-    <div className={`p-4 rounded-lg border-l-4 ${type === 'positive' ? 'border-green-500 bg-green-50' : 'border-yellow-500 bg-yellow-50'}`}>
-      <h3 className="font-semibold text-gray-900 mb-1">{title}</h3>
-      <p className="text-gray-700 text-sm">{description}</p>
+    <div className="p-4 border border-gray-200 rounded-lg">
+      <div className="flex items-center justify-between mb-2">
+        <h4 className="font-semibold text-gray-900">{title}</h4>
+        <span className="text-lg font-bold text-blue-600">{value}</span>
+      </div>
+      <p className="text-sm text-gray-600">{description}</p>
     </div>
   )
 }
